@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:45 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/30 01:31:29 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:15:39 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,55 +102,86 @@ char	*str_to_bits(char *str)
 	return (last_bit(bits, size));
 }
 
-int pauseIt;
+volatile sig_atomic_t done;
 
 void handler(int sig)
 {
 	if (sig == SIGUSR1)
-		pauseIt = 0;
-	if (sig == SIGUSR2)
-		pauseIt = 2;
+		done = 1;
 }
+// 0111 1111 ascii
+// unicode 2 : 1100 
+// unicode 3 : 1110 
+// unicode 4 : 1111 
 
-void is_pause()
+int	sig_catch(void)
 {
-	if (pauseIt == 1)
-		pause();
-	if (pauseIt == 2)
-		ft_printf("DONE\n");
-	pauseIt = 1;
-}
-
-int main(int argc, char **argv)
-{
-	char *p;
-	char *s;
-	pid_t pid;
-	int sig;
-
 	struct sigaction act;
+
 	act.sa_handler = handler;
 	sigemptyset(&act.sa_mask);
-	act.sa_flags = SA_RESTART;
-
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
-		return 1;
-	if (sigaction(SIGUSR2, &act, NULL) == -1)
-		return 1;
-pauseIt = 1;
-	pid = atoi(argv[1]);
-	s = argv[2];
-	p = str_to_bits(s);
-	if (!p)
-		return 1;
-	printf("Sending: \"%s\" To %i\n", p, pid);
+	{
+		ft_putendl_fd("Error: sigaction SIGUSR1 faild", 2);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_args(int argc, char **argv)
+{
+	pid_t	pid;
+
+	if (argc != 3)
+	{
+		ft_printf("Usage: %s PID message\n", argv[0]);
+		return (1);
+	}
+	pid = ft_atoi(argv[1]);
+	if (kill(pid, 0) == -1)
+	{
+		ft_printf("Invalid PID: %s\n", argv[1]);
+		return (1);
+	}
+	return (0);
+}
+
+void	send_msg(char *p, pid_t pid)
+{
 	while (*p)
 	{
 		if (*p == '0')
 			kill(pid, SIGUSR1);
 		else if (*p == '1')
 			kill(pid, SIGUSR2);
-		is_pause();
+		usleep(50);
+		if (done == 1)
+			ft_printf("DONE");
 		p++;
 	}
+}
+
+int	main(int argc, char **argv)
+{
+	char	*p;
+	char	*s;
+	pid_t	pid;
+
+	if (sig_catch())
+		return (1);
+	if (check_args(argc, argv))
+		return (1);
+	done = 0;
+	pid = ft_atoi(argv[1]);
+	s = argv[2];
+	p = str_to_bits(s);
+	if (!p)
+	{
+		ft_putendl_fd("Error: malloc", 2);
+		return (1);
+	}
+	ft_printf("Sending: \"%s\" To %i\n", s, pid);
+	send_msg(p, pid);
+	free(p);
+	return (0);
 }

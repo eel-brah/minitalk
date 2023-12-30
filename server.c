@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/30 01:35:22 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:14:38 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,16 @@ typedef struct s_bit
 
 t_bit bit;
 
-void handler(int sig, siginfo_t * info, void * context)
+void handler(int sig, siginfo_t *info, void *context)
 {
+	static pid_t cr_pid;
+
+	if (cr_pid != info->si_pid)
+	{
+		bit.bit = 0;
+		bit.count = 7;
+		cr_pid = info->si_pid;
+	}
     if(sig == SIGUSR2)
        bit.bit |= (1 << bit.count);
 	bit.count--;
@@ -75,16 +83,13 @@ void handler(int sig, siginfo_t * info, void * context)
 		if (bit.bit == 0)
 		{
 			write(1, "\n", 1);
-			kill(info->si_pid, SIGUSR2);
-			bit.bit = 0;
-			bit.count = 7;
-			return ;
+			kill(cr_pid, SIGUSR1);
 		}
-		write(1, &bit.bit, 1);
+		else
+			write(1, &bit.bit, 1);
 		bit.bit = 0;
 		bit.count = 7;
 	}
-	kill(info->si_pid, SIGUSR1);
 }
 
 int main(int argc, char **argv)
