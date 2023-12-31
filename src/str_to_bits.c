@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.c                                         :+:      :+:    :+:   */
+/*   str_to_bits.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/29 16:39:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/30 19:51:19 by eel-brah         ###   ########.fr       */
+/*   Created: 2023/12/31 16:19:14 by eel-brah          #+#    #+#             */
+/*   Updated: 2023/12/31 16:43:47 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../include/minitalk.h"
 
-char	*char_to_bits(char c)
+static char	*char_to_bits(char c)
 {
 	char	*p;
 	int		i;
@@ -34,7 +34,7 @@ char	*char_to_bits(char c)
 	return (p);
 }
 
-void	*str_realloc(char *ptr, size_t newSize)
+static void	*str_realloc(char *ptr, size_t newSize)
 {
 	char	*new;
 
@@ -47,11 +47,29 @@ void	*str_realloc(char *ptr, size_t newSize)
 	return (new);
 }
 
-void	*free_them(char *p1, char *p2)
+static void	*free_them(char *p1, char *p2)
 {
 	free(p1);
 	free(p2);
 	return (NULL);
+}
+
+static char	*last_bit(char *bits, size_t size)
+{
+	char	*c;
+	char	*tmp;
+
+	c = char_to_bits(0);
+	if (!c)
+		return (free_them(c, bits));
+	size += 8;
+	tmp = str_realloc(bits, size);
+	if (!tmp)
+		return (free_them(c, bits));
+	bits = tmp;
+	ft_strlcat(bits, c, size);
+	free(c);
+	return (bits);
 }
 
 char	*str_to_bits(char *str)
@@ -61,9 +79,11 @@ char	*str_to_bits(char *str)
 	char	*tmp;
 	size_t	size;
 
+	if (!str)
+		return (NULL);
 	bits = NULL;
 	size = 1;
-	while (str && *str)
+	while (*str)
 	{
 		c = char_to_bits(*str);
 		if (!c)
@@ -77,49 +97,5 @@ char	*str_to_bits(char *str)
 		free(c);
 		str++;
 	}
-	return (bits);
-}
-
-char	*bits_to_str(char *bits)
-{
-	char	*str;
-	size_t	size;
-	int		i;
-	int		j;
-
-	size = ft_strlen(bits);
-	size /= 8;
-	str = ft_calloc(size + 1, sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	j = 1;
-	while (*bits)
-	{
-		if (*bits == '1')
-			str[i] = str[i] | (128 / j);
-		j *= 2;
-		bits++;
-		if (j > 128)
-		{
-			j = 1;
-			i++;
-		}
-	}
-	str[i] = 0;
-	return (str);
-}
-
-int main()
-{
-	char c;
-	char *p = "ￚ ▀ ￮ hi 🧑";
-	char *p2;
-
-	p = str_to_bits(p);
-	printf("%s\n", p);
-	p2 = bits_to_str(p);
-	printf("%s\n", p2);
-	free(p);
-	free(p2);
+	return (last_bit(bits, size));
 }

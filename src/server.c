@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 02:17:35 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/31 16:45:39 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "../include/minitalk.h"
 
 void	handler(int sig, siginfo_t *info, void *context)
 {
@@ -18,6 +18,7 @@ void	handler(int sig, siginfo_t *info, void *context)
 	static int		byte;
 	static int		size;
 
+	(void)context;
 	if (cr_pid != info->si_pid)
 	{
 		byte = 0;

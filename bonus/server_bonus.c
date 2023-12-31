@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 02:19:58 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/31 16:45:19 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk_bonus.h"
+#include "../include/minitalk_bonus.h"
 
 int	unicode_spr(int *byte, int *size)
 {
@@ -73,6 +73,7 @@ void	handler(int sig, siginfo_t *info, void *context)
 	static int		size;
 	static int		w;
 
+	(void)context;
 	if (cr_pid != info->si_pid)
 	{
 		setter(&byte, &size, &w);
