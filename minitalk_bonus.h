@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/30 19:48:01 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 02:04:16 by eel-brah         ###   ########.fr       */
+/*   Created: 2023/12/31 02:18:58 by eel-brah          #+#    #+#             */
+/*   Updated: 2023/12/31 02:19:21 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
 
 # include <libc.h>
 # include "libft/libft.h"

@@ -6,11 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:45 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 00:26:14 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/31 02:19:38 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 char	*char_to_bits(char c)
 {
@@ -100,21 +100,17 @@ char	*str_to_bits(char *str)
 	return (last_bit(bits, size));
 }
 
-volatile sig_atomic_t done;
+volatile sig_atomic_t	g_done;
 
-void handler(int sig)
+void	handler(int sig)
 {
 	if (sig == SIGUSR1)
-		done = 1;
+		g_done = 1;
 }
-// 0111 1111 ascii
-// unicode 2 : 1100 
-// unicode 3 : 1110 
-// unicode 4 : 1111 
 
 int	sig_catch(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
 
 	act.sa_handler = handler;
 	sigemptyset(&act.sa_mask);
@@ -153,8 +149,8 @@ void	send_msg(char *p, pid_t pid)
 		else if (*p == '1')
 			kill(pid, SIGUSR2);
 		usleep(200);
-		if (done == 1)
-			ft_printf("DONE\n");
+		if (g_done == 1)
+			ft_printf("g_done\n");
 		p++;
 	}
 }
@@ -166,7 +162,7 @@ int	main(int argc, char **argv)// if enpty string
 
 	if (sig_catch() || check_args(argc, argv))
 		return (1);
-	done = 0;
+	g_done = 0;
 	pid = ft_atoi(argv[1]);
 	p = str_to_bits(argv[2]);
 	if (!p)

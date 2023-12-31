@@ -6,19 +6,17 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 00:27:23 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/31 02:17:35 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-t_byte	byte;
-
-void handler(int sig, siginfo_t *info, void *context)
+void	handler(int sig, siginfo_t *info, void *context)
 {
 	static pid_t	cr_pid;
-	static int		byte = 0;
-	static int		size = 7;
+	static int		byte;
+	static int		size;
 
 	if (cr_pid != info->si_pid)
 	{
@@ -26,8 +24,8 @@ void handler(int sig, siginfo_t *info, void *context)
 		size = 7;
 		cr_pid = info->si_pid;
 	}
-    if(sig == SIGUSR2)
-       byte |= (1 << size);
+	if (sig == SIGUSR2)
+		byte |= (1 << size);
 	if (size == 0)
 	{
 		if (byte == 0)
@@ -37,22 +35,28 @@ void handler(int sig, siginfo_t *info, void *context)
 		byte = 0;
 		size = 7;
 	}
-	else 
+	else
 		size--;
 }
 
-int main(int argc, char **argv)
+int	main(void)
 {
 	struct sigaction	act;
 
 	act.sa_sigaction = handler;
 	sigemptyset(&act.sa_mask);
-	act.sa_flags = SA_RESTART | SA_SIGINFO;
+	act.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
-		return 1;
+	{
+		ft_printf("Failed to send %d", SIGUSR1);
+		return (1);
+	}
 	if (sigaction(SIGUSR2, &act, NULL) == -1)
-		return 1;
-	printf("%i\n", getpid());
+	{
+		ft_printf("Failed to send %d", SIGUSR2);
+		return (1);
+	}
+	ft_printf("PID: %i\n", getpid());
 	while (1)
 		pause();
 	return (0);

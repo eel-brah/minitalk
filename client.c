@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:45 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 00:21:08 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/31 02:04:42 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,6 @@ char	*str_to_bits(char *str)
 	}
 	return (last_bit(bits, size));
 }
-
-// 0111 1111 ascii
-// unicode 2 : 1100 
-// unicode 3 : 1110 
-// unicode 4 : 1111 
 
 int	check_args(int argc, char **argv)
 {
