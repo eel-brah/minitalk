@@ -6,12 +6,11 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:39:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/29 20:37:21 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/30 19:51:19 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libc.h>
-#include "libft/libft.h"
+#include "minitalk.h"
 
 char	*char_to_bits(char c)
 {

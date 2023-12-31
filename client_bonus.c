@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:45 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 00:21:08 by eel-brah         ###   ########.fr       */
+/*   Updated: 2023/12/31 00:26:14 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,31 @@ char	*str_to_bits(char *str)
 	return (last_bit(bits, size));
 }
 
+volatile sig_atomic_t done;
+
+void handler(int sig)
+{
+	if (sig == SIGUSR1)
+		done = 1;
+}
 // 0111 1111 ascii
 // unicode 2 : 1100 
 // unicode 3 : 1110 
 // unicode 4 : 1111 
+
+int	sig_catch(void)
+{
+	struct sigaction act;
+
+	act.sa_handler = handler;
+	sigemptyset(&act.sa_mask);
+	if (sigaction(SIGUSR1, &act, NULL) == -1)
+	{
+		ft_putendl_fd("Error: sigaction SIGUSR1 faild", 2);
+		return (1);
+	}
+	return (0);
+}
 
 int	check_args(int argc, char **argv)
 {
@@ -132,6 +153,8 @@ void	send_msg(char *p, pid_t pid)
 		else if (*p == '1')
 			kill(pid, SIGUSR2);
 		usleep(200);
+		if (done == 1)
+			ft_printf("DONE\n");
 		p++;
 	}
 }
@@ -141,8 +164,9 @@ int	main(int argc, char **argv)// if enpty string
 	char	*p;
 	pid_t	pid;
 
-	if (check_args(argc, argv))
+	if (sig_catch() || check_args(argc, argv))
 		return (1);
+	done = 0;
 	pid = ft_atoi(argv[1]);
 	p = str_to_bits(argv[2]);
 	if (!p)
