@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:45 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 17:04:04 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:22:10 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	check_args(int argc, char **argv)
 
 	if (argc != 3)
 	{
-		ft_printf("Usage: %s PID message\n", argv[0]);
+		ft_printf("\033[0;31mUsage: %s PID message\033[0m\n", argv[0]);
 		return (1);
 	}
 	pid = ft_atoi(argv[1]);
 	if (pid <= 0 || kill(pid, 0) == -1)
 	{
-		ft_printf("Invalid PID: %s\n", argv[1]);
+		ft_printf("\033[0;31mInvalid PID: %s\033[0m\n", argv[1]);
 		return (1);
 	}
 	return (0);
@@ -61,7 +61,8 @@ int	main(int argc, char **argv)// if enpty string
 	dots = "";
 	if (ft_strlen(argv[2]) > 15)
 		dots = "...";
-	ft_printf("Sending: \"%.15s%s\" To %i\n", argv[2], dots, pid);
+	ft_printf("Sending: \033[0;34m\"%.15s%s\"\033[0m To \033[1;32m%i\033[0m\n",
+		argv[2], dots, pid);
 	send_msg(p, pid);
 	free(p);
 	return (0);

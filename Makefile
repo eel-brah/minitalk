@@ -45,7 +45,7 @@ $(NAME_2): $(S_OBJ_FILES) $(LIBFT)
 	@echo "\033[1;32m$(NAME_2) \033[0;32mhas been compiled\033[0m"
 
 $(SRC_DIRS)/%.o: $(SRC_DIRS)/%.c $(INCLUDE)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 
 bonus: lib $(NAME_BONUS) $(NAME_BONUS_2)
@@ -59,7 +59,7 @@ $(NAME_BONUS_2): $(S_OBJ_FILES_BONUS) $(LIBFT)
 	@echo "\033[1;32m$(NAME_BONUS_2) \033[0;32mhas been compiled\033[0m"
 
 $(BONUS_DIRS)/%.o: $(BONUS_DIRS)/%.c $(INCLUDE_BONUS)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 lib:
 	@$(MAKE) -C $(LIBFTDIR)

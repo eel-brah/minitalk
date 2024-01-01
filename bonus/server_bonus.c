@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 16:45:19 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:24:47 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	print_bits(int *byte, int *size, int *w, pid_t cr_pid)
 		write(1, "\n", 1);
 		setter(byte, size, w);
 		if (kill(cr_pid, SIGUSR1) == -1)
-			ft_printf("Failed to send %d", SIGUSR1);
+			ft_printf("\033[0;31mFailed to send %d\033[0m\n", SIGUSR1);
 	}
 	else
 	{
@@ -98,15 +98,15 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
 	{
-		ft_printf("Failed to send %d", SIGUSR1);
+		ft_printf("\033[0;31mFailed to send %d\033[0m\n", SIGUSR1);
 		return (1);
 	}
 	if (sigaction(SIGUSR2, &act, NULL) == -1)
 	{
-		ft_printf("Failed to send %d", SIGUSR2);
+		ft_printf("\033[0;31mFailed to send %d\033[0m\n", SIGUSR2);
 		return (1);
 	}
-	ft_printf("PID: %i\n", getpid());
+	ft_printf("PID: \033[1;32m%i\033[0m\n", getpid());
 	while (1)
 		pause();
 	return (0);

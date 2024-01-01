@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:41 by eel-brah          #+#    #+#             */
-/*   Updated: 2023/12/31 16:45:39 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:23:59 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
 	{
-		ft_printf("Failed to send %d", SIGUSR1);
+		ft_printf("\033[0;31mFailed to send %d\033[0m\n", SIGUSR1);
 		return (1);
 	}
 	if (sigaction(SIGUSR2, &act, NULL) == -1)
 	{
-		ft_printf("Failed to send %d", SIGUSR2);
+		ft_printf("\033[0;31mFailed to send %d\033[0m\n", SIGUSR2);
 		return (1);
 	}
-	ft_printf("PID: %i\n", getpid());
+	ft_printf("PID: \033[1;32m%i\033[0m\n", getpid());
 	while (1)
 		pause();
 	return (0);
