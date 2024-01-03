@@ -6,7 +6,7 @@
 /*   By: eel-brah <eel-brah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 21:05:45 by eel-brah          #+#    #+#             */
-/*   Updated: 2024/01/01 16:22:55 by eel-brah         ###   ########.fr       */
+/*   Updated: 2024/01/03 21:38:20 by eel-brah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	send_msg(char *p, pid_t pid)
 	}
 }
 
-int	main(int argc, char **argv)// if enpty string
+int	main(int argc, char **argv)
 {
 	char	*p;
 	pid_t	pid;
